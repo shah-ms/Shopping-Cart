@@ -22,6 +22,9 @@ class Items extends React.Component {
     increment(i) {
       let newObj = this.props.totalItems;
       newObj.counters[i] = this.props.totalItems.counters[i] + 1;
+      if(newObj.counters[i] > 0) {
+        document.getElementById('sub').setAttribute('disabled', 'disabled');
+      }
       if(newObj.counters[i] === 1) {
         newObj.cartItems = this.props.totalItems.cartItems + 1;
       } 
@@ -30,10 +33,15 @@ class Items extends React.Component {
 
     decrement(i) {
       let newObj = this.props.totalItems;
-      newObj.counters[i] = this.props.totalItems.counters[i] - 1;
-      if(newObj.counters[i] === 0) {
-        newObj.cartItems = this.props.totalItems.cartItems - 1;
+      
+      if(newObj.counters[i] > 0) {
+        newObj.counters[i] = this.props.totalItems.counters[i] - 1;
+        
+        if(newObj.counters[i] === 0) {
+          newObj.cartItems = this.props.totalItems.cartItems - 1;
+        }
       }
+
       this.setState(newObj);
     }
 
@@ -95,8 +103,8 @@ class Items extends React.Component {
                     </TableCell>
                     <TableCell align="center">{this.props.totalItems.counters[item]}</TableCell>
                     <TableCell align="center">
-                    <Button variant="contained" color="primary" onClick={() => this.increment(item)}>Add</Button> &nbsp;
-                    <Button variant="contained" color="secondary" onClick={() => this.decrement(item)}>Subtract</Button> &nbsp;
+                    <Button variant="contained" id="add" color="primary" onClick={() => this.increment(item)}>Add</Button> &nbsp;
+                    <Button variant="contained" id="sub" color="secondary" onClick={() => this.decrement(item)}>Subtract</Button> &nbsp;
                     <IconButton aria-label="delete">
                     <DeleteIcon onClick={() => this.delete(item)}/>
                     </IconButton>
